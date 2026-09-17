@@ -7,6 +7,15 @@ import { formatMoney } from "@/lib/format";
 import { StatTile } from "@/components/dashboard/stat-tile";
 import { BillCard } from "@/components/bills/bill-card";
 import { Button } from "@/components/ui/button";
+import type { BillWithCategory } from "@/lib/bills/types";
+
+function totalsByCurrency(bills: BillWithCategory[]) {
+  const totals = new Map<string, number>();
+  for (const bill of bills) {
+    totals.set(bill.currency, (totals.get(bill.currency) ?? 0) + bill.amount);
+  }
+  return [...totals.entries()].sort((a, b) => b[1] - a[1]);
+}
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -21,24 +30,24 @@ export default async function DashboardPage() {
 
   const today = todayIso();
   const weekOut = addDaysIso(today, 7);
-  const upcoming = bills
-    .filter((bill) => !bill.paid_at && bill.due_date >= today && bill.due_date <= weekOut)
-    .slice(0, 5);
+
+  const overdue = bills.filter((bill) => !bill.paid_at && bill.due_date < today);
+  const dueSoon = bills.filter(
+    (bill) => !bill.paid_at && bill.due_date >= today && bill.due_date <= weekOut,
+  );
+  const upcoming = dueSoon.slice(0, 5);
 
   const monthKey = today.slice(0, 7);
   const paidThisMonth = bills.filter(
     (bill) => bill.paid_at && bill.paid_at.slice(0, 7) === monthKey,
   );
-  const totalsByCurrency = new Map<string, number>();
-  for (const bill of paidThisMonth) {
-    totalsByCurrency.set(
-      bill.currency,
-      (totalsByCurrency.get(bill.currency) ?? 0) + bill.amount,
-    );
-  }
-  const sortedTotals = [...totalsByCurrency.entries()].sort((a, b) => b[1] - a[1]);
+  const sortedTotals = totalsByCurrency(paidThisMonth);
   const [topCurrency, topTotal] = sortedTotals[0] ?? ["AED", 0];
   const extraCurrencies = sortedTotals.length - 1;
+
+  const sortedOverdueTotals = totalsByCurrency(overdue);
+  const [overdueCurrency, overdueTotal] = sortedOverdueTotals[0] ?? ["AED", 0];
+  const extraOverdueCurrencies = sortedOverdueTotals.length - 1;
 
   return (
     <div className="flex flex-col gap-6">
@@ -61,8 +70,32 @@ export default async function DashboardPage() {
               : `${paidThisMonth.length} bill${paidThisMonth.length === 1 ? "" : "s"} paid`
           }
         />
-        <StatTile label="Next 7 days" value={String(upcoming.length)} hint="bills due" />
+        <StatTile label="Next 7 days" value={String(dueSoon.length)} hint="bills due" />
       </div>
+
+      {overdue.length > 0 && (
+        <div>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="font-heading text-sm font-semibold text-status-overdue">
+              Overdue bills
+            </h2>
+            <span className="text-xs text-muted-foreground">
+              {formatMoney(overdueTotal, overdueCurrency)}
+              {extraOverdueCurrencies > 0 &&
+                ` +${extraOverdueCurrencies} more currenc${extraOverdueCurrencies === 1 ? "y" : "ies"}`}
+            </span>
+          </div>
+          <div className="flex flex-col gap-2.5">
+            {overdue.slice(0, 5).map((bill) => (
+              <BillCard
+                key={bill.id}
+                bill={bill}
+                className="bg-status-overdue-bg ring-status-overdue/15 hover:bg-status-overdue-bg/70"
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       <div>
         <div className="mb-3 flex items-center justify-between">

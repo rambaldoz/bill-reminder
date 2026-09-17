@@ -25,11 +25,13 @@ export function BillForm({
   bill,
   action,
   submitLabel,
+  defaultCurrency = "AED",
 }: {
   categories: Category[];
   bill?: BillWithCategory;
   action: (prevState: BillActionState, formData: FormData) => Promise<BillActionState>;
   submitLabel: string;
+  defaultCurrency?: string;
 }) {
   const [state, formAction, pending] = useActionState(action, initialState);
 
@@ -98,7 +100,7 @@ export function BillForm({
             name="currency"
             placeholder="AED"
             maxLength={8}
-            defaultValue={bill?.currency ?? "AED"}
+            defaultValue={bill?.currency ?? defaultCurrency}
             className="uppercase"
             required
           />

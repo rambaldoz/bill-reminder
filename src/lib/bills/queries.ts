@@ -21,6 +21,20 @@ export async function getCategories(
   });
 }
 
+export async function getCategory(
+  supabase: SupabaseClient,
+  id: string,
+): Promise<Category | null> {
+  const { data, error } = await supabase
+    .from("categories")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data as Category | null;
+}
+
 export async function getBills(
   supabase: SupabaseClient,
 ): Promise<BillWithCategory[]> {

@@ -1,12 +1,10 @@
-import { CalendarDays } from "lucide-react";
-import { ComingSoon } from "@/components/dashboard/coming-soon";
+import { createClient } from "@/lib/supabase/server";
+import { getBills } from "@/lib/bills/queries";
+import { MonthCalendar } from "@/components/calendar/month-calendar";
 
-export default function CalendarPage() {
-  return (
-    <ComingSoon
-      icon={CalendarDays}
-      title="Calendar"
-      description="Your bills will show up here, marked on the day they're due."
-    />
-  );
+export default async function CalendarPage() {
+  const supabase = await createClient();
+  const bills = await getBills(supabase);
+
+  return <MonthCalendar bills={bills} />;
 }
