@@ -1,26 +1,167 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* bill status colors */
+  --color-status-upcoming: var(--status-upcoming);
+  --color-status-upcoming-bg: var(--status-upcoming-bg);
+  --color-status-due-soon: var(--status-due-soon);
+  --color-status-due-soon-bg: var(--status-due-soon-bg);
+  --color-status-overdue: var(--status-overdue);
+  --color-status-overdue-bg: var(--status-overdue-bg);
+  --color-status-paid: var(--status-paid);
+  --color-status-paid-bg: var(--status-paid-bg);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Platinum page bg, white cards, Gunmetal text */
+  --background: #f3f5f9;
+  --foreground: #393b47;
+  --card: #ffffff;
+  --card-foreground: #393b47;
+  --popover: #ffffff;
+  --popover-foreground: #393b47;
+  /* Lime Cream brand color */
+  --primary: #c9f270;
+  --primary-foreground: #22281a;
+  /* readable dark-olive shade of primary, for text/icons on light surfaces */
+  --primary-ink: #5b7a1f;
+  --secondary: #e5e8ef;
+  --secondary-foreground: #393b47;
+  --muted: #e9ebf1;
+  --muted-foreground: #6e7180;
+  --accent: #e5e8ef;
+  --accent-foreground: #393b47;
+  --destructive: #f4442e;
+  --destructive-foreground: #ffffff;
+  --border: #d5d9e2;
+  --input: #d5d9e2;
+  --ring: #393b47;
+  --chart-1: #c9f270;
+  --chart-2: #fc9e4f;
+  --chart-3: #f4442e;
+  --chart-4: #393b47;
+  --chart-5: #8b90a0;
+  --radius: 1rem;
+  --sidebar: #f3f5f9;
+  --sidebar-foreground: #393b47;
+  --sidebar-primary: #c9f270;
+  --sidebar-primary-foreground: #22281a;
+  --sidebar-accent: #e5e8ef;
+  --sidebar-accent-foreground: #393b47;
+  --sidebar-border: #d5d9e2;
+  --sidebar-ring: #393b47;
+
+  /* bill status colors: upcoming / due soon / overdue / paid */
+  --status-upcoming: #393b47;
+  --status-upcoming-bg: #e5e8ef;
+  --status-due-soon: #b4691a;
+  --status-due-soon-bg: #fdecd9;
+  --status-overdue: #d93420;
+  --status-overdue-bg: #fce1dc;
+  --status-paid: #5b7a1f;
+  --status-paid-bg: #eef6d2;
+}
+
+.dark {
+  --background: #1b1c22;
+  --foreground: #e7e9ef;
+  --card: #24262e;
+  --card-foreground: #e7e9ef;
+  --popover: #24262e;
+  --popover-foreground: #e7e9ef;
+  --primary: #c9f270;
+  --primary-foreground: #1b2211;
+  --primary-ink: #c9f270;
+  --secondary: #2c2e37;
+  --secondary-foreground: #e7e9ef;
+  --muted: #2a2c34;
+  --muted-foreground: #9ca0af;
+  --accent: #2c2e37;
+  --accent-foreground: #e7e9ef;
+  --destructive: #ff6b54;
+  --destructive-foreground: #1b1c22;
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: #c9f270;
+  --chart-1: #c9f270;
+  --chart-2: #fc9e4f;
+  --chart-3: #ff6b54;
+  --chart-4: #e7e9ef;
+  --chart-5: #9096a8;
+  --sidebar: #24262e;
+  --sidebar-foreground: #e7e9ef;
+  --sidebar-primary: #c9f270;
+  --sidebar-primary-foreground: #1b2211;
+  --sidebar-accent: #2c2e37;
+  --sidebar-accent-foreground: #e7e9ef;
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: #c9f270;
+
+  --status-upcoming: #c3c7d4;
+  --status-upcoming-bg: #2c2e37;
+  --status-due-soon: #fc9e4f;
+  --status-due-soon-bg: #3a2c1c;
+  --status-overdue: #ff6b54;
+  --status-overdue-bg: #3a231e;
+  --status-paid: #c9f270;
+  --status-paid-bg: #263018;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }
