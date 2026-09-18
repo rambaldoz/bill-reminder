@@ -22,6 +22,13 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "Bill Tracker",
   },
+  other: {
+    // Next only emits the modern unprefixed "mobile-web-app-capable" for
+    // appleWebApp.capable. iOS Safari has historically keyed off this
+    // classic prefixed name specifically to run installed PWAs without
+    // its own address bar, so set it explicitly too.
+    "apple-mobile-web-app-capable": "yes",
+  },
 };
 
 export const viewport: Viewport = {
