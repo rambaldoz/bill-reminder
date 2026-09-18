@@ -1,12 +1,18 @@
-import { PieChart } from "lucide-react";
-import { ComingSoon } from "@/components/dashboard/coming-soon";
+import { createClient } from "@/lib/supabase/server";
+import { getBills } from "@/lib/bills/queries";
+import { getProfile } from "@/lib/profile";
+import { StatsView } from "@/components/stats/stats-view";
 
-export default function StatsPage() {
-  return (
-    <ComingSoon
-      icon={PieChart}
-      title="Statistics"
-      description="Category breakdowns and spend-over-time will show up here once you've logged some bills."
-    />
-  );
+export default async function StatsPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const [bills, profile] = await Promise.all([
+    getBills(supabase),
+    user ? getProfile(supabase, user.id) : Promise.resolve(null),
+  ]);
+
+  return <StatsView bills={bills} defaultCurrency={profile?.default_currency ?? "AED"} />;
 }

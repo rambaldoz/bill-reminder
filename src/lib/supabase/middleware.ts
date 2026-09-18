@@ -1,7 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/login", "/sign-up", "/auth"];
+// "/api" is excluded on purpose: API routes authenticate themselves (e.g.
+// the reminders cron checks a bearer secret) rather than going through the
+// page-navigation login redirect below.
+const PUBLIC_PATHS = ["/login", "/sign-up", "/auth", "/api"];
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });

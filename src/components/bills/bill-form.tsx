@@ -26,12 +26,14 @@ export function BillForm({
   action,
   submitLabel,
   defaultCurrency = "AED",
+  defaultReminderOffsetDays = 3,
 }: {
   categories: Category[];
   bill?: BillWithCategory;
   action: (prevState: BillActionState, formData: FormData) => Promise<BillActionState>;
   submitLabel: string;
   defaultCurrency?: string;
+  defaultReminderOffsetDays?: number;
 }) {
   const [state, formAction, pending] = useActionState(action, initialState);
 
@@ -147,7 +149,7 @@ export function BillForm({
           min="0"
           step="1"
           inputMode="numeric"
-          defaultValue={bill?.reminder_offset_days ?? 3}
+          defaultValue={bill?.reminder_offset_days ?? defaultReminderOffsetDays}
           required
         />
       </div>

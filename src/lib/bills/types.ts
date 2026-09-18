@@ -25,6 +25,7 @@ export type Bill = {
   reminder_offset_days: number;
   notes: string | null;
   paid_at: string | null;
+  reminder_sent_at: string | null;
   parent_bill_id: string | null;
   created_at: string;
   updated_at: string;
