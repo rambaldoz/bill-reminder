@@ -88,17 +88,17 @@ export function StatsView({
       </div>
 
       {currencies.length > 1 && (
-        <div className="flex flex-wrap gap-1.5">
+        <div className="inline-flex w-fit gap-1 rounded-full bg-secondary/60 p-1.5 ring-1 ring-border/70">
           {currencies.map((code) => (
             <button
               key={code}
               type="button"
               onClick={() => setCurrency(code)}
               className={cn(
-                "rounded-full px-3 py-1.5 text-xs font-medium transition-colors",
+                "rounded-full px-5 py-2 text-sm font-semibold transition-colors",
                 currency === code
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary text-secondary-foreground hover:bg-secondary/70",
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               {code}

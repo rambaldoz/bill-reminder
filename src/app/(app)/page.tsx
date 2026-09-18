@@ -42,12 +42,7 @@ export default async function DashboardPage() {
     (bill) => bill.paid_at && bill.paid_at.slice(0, 7) === monthKey,
   );
   const sortedTotals = totalsByCurrency(paidThisMonth);
-  const [topCurrency, topTotal] = sortedTotals[0] ?? ["AED", 0];
-  const extraCurrencies = sortedTotals.length - 1;
-
   const sortedOverdueTotals = totalsByCurrency(overdue);
-  const [overdueCurrency, overdueTotal] = sortedOverdueTotals[0] ?? ["AED", 0];
-  const extraOverdueCurrencies = sortedOverdueTotals.length - 1;
 
   return (
     <div className="flex flex-col gap-6">
@@ -61,15 +56,30 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <StatTile
-          label="This month"
-          value={formatMoney(topTotal, topCurrency)}
-          hint={
-            extraCurrencies > 0
-              ? `+${extraCurrencies} more currenc${extraCurrencies === 1 ? "y" : "ies"}`
-              : `${paidThisMonth.length} bill${paidThisMonth.length === 1 ? "" : "s"} paid`
-          }
-        />
+        {sortedTotals.length > 1 ? (
+          <div className="rounded-2xl bg-card p-4 ring-1 ring-border/70">
+            <p className="text-xs font-medium text-muted-foreground">This month</p>
+            <div className="mt-1.5 flex flex-col gap-0.5">
+              {sortedTotals.map(([currency, total]) => (
+                <p
+                  key={currency}
+                  className="font-heading text-lg leading-tight font-semibold tabular-nums tracking-tight"
+                >
+                  {formatMoney(total, currency)}
+                </p>
+              ))}
+            </div>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {paidThisMonth.length} bill{paidThisMonth.length === 1 ? "" : "s"} paid
+            </p>
+          </div>
+        ) : (
+          <StatTile
+            label="This month"
+            value={formatMoney(sortedTotals[0]?.[1] ?? 0, sortedTotals[0]?.[0] ?? "AED")}
+            hint={`${paidThisMonth.length} bill${paidThisMonth.length === 1 ? "" : "s"} paid`}
+          />
+        )}
         <StatTile label="Next 7 days" value={String(dueSoon.length)} hint="bills due" />
       </div>
 
@@ -80,9 +90,7 @@ export default async function DashboardPage() {
               Overdue bills
             </h2>
             <span className="text-xs text-muted-foreground">
-              {formatMoney(overdueTotal, overdueCurrency)}
-              {extraOverdueCurrencies > 0 &&
-                ` +${extraOverdueCurrencies} more currenc${extraOverdueCurrencies === 1 ? "y" : "ies"}`}
+              {sortedOverdueTotals.map(([currency, total]) => formatMoney(total, currency)).join(" · ")}
             </span>
           </div>
           <div className="flex flex-col gap-2.5">

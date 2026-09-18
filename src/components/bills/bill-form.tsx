@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import type { BillActionState } from "@/app/(app)/bills/actions";
 import { CategoryIcon } from "@/lib/bills/category-icons";
+import { CURRENCIES } from "@/lib/currencies";
 import { RECURRENCE_LABEL } from "@/lib/bills/recurrence";
 import type { BillWithCategory, Category, Recurrence } from "@/lib/bills/types";
 import { Button } from "@/components/ui/button";
@@ -45,6 +46,10 @@ export function BillForm({
         {category.name}
       </span>,
     ]),
+  );
+
+  const currencyItems = Object.fromEntries(
+    CURRENCIES.map((currency) => [currency.code, currency.code]),
   );
 
   return (
@@ -97,15 +102,22 @@ export function BillForm({
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="currency">Currency</Label>
-          <Input
-            id="currency"
+          <Select
             name="currency"
-            placeholder="AED"
-            maxLength={8}
+            items={currencyItems}
             defaultValue={bill?.currency ?? defaultCurrency}
-            className="uppercase"
-            required
-          />
+          >
+            <SelectTrigger id="currency" className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {CURRENCIES.map((currency) => (
+                <SelectItem key={currency.code} value={currency.code}>
+                  {currency.code} — {currency.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
