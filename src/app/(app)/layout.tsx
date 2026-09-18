@@ -1,7 +1,10 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getBills } from "@/lib/bills/queries";
+import { billStatus } from "@/lib/bills/status";
 import { BottomNav } from "@/components/nav/bottom-nav";
 import { UserMenu } from "@/components/nav/user-menu";
+import { NotificationBell } from "@/components/nav/notification-bell";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -15,6 +18,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const displayName = (user.user_metadata?.display_name as string | undefined) ?? "";
 
+  const bills = await getBills(supabase);
+  const reminders = bills.filter((bill) => {
+    if (bill.paid_at) return false;
+    const status = billStatus(bill);
+    return status === "due_soon" || status === "overdue";
+  });
+
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <header className="sticky top-0 z-10 border-b border-border/70 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
@@ -27,7 +37,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
               Bill Tracker
             </span>
           </div>
-          <UserMenu displayName={displayName} email={user.email ?? ""} />
+          <div className="flex items-center gap-1">
+            <NotificationBell bills={reminders} />
+            <UserMenu displayName={displayName} email={user.email ?? ""} />
+          </div>
         </div>
       </header>
 

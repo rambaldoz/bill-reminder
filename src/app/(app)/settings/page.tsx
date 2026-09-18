@@ -4,6 +4,8 @@ import { signOut } from "@/app/auth/actions";
 import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/profile";
 import { CurrencyForm } from "@/components/settings/currency-form";
+import { ReminderOffsetForm } from "@/components/settings/reminder-offset-form";
+import { PushToggle } from "@/components/settings/push-toggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -49,13 +51,27 @@ export default async function SettingsPage() {
           <CardTitle className="text-sm font-semibold">Currency</CardTitle>
         </CardHeader>
         <CardContent>
-          <CurrencyForm defaultCurrency={profile?.default_currency ?? "AED"} />
+          <CurrencyForm
+            key={profile?.default_currency ?? "AED"}
+            defaultCurrency={profile?.default_currency ?? "AED"}
+          />
         </CardContent>
       </Card>
 
-      <div className="rounded-2xl border border-dashed border-border p-5 text-center text-sm text-muted-foreground">
-        Reminder defaults and push notifications are coming in a later step.
-      </div>
+      <Card className="shadow-none">
+        <CardHeader>
+          <CardTitle className="text-sm font-semibold">Reminders</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-5">
+          <ReminderOffsetForm
+            key={profile?.default_reminder_offset_days ?? 3}
+            defaultDays={profile?.default_reminder_offset_days ?? 3}
+          />
+          <div className="border-t border-border pt-5">
+            <PushToggle />
+          </div>
+        </CardContent>
+      </Card>
 
       <form action={signOut}>
         <Button type="submit" variant="outline" className="w-full">

@@ -22,6 +22,7 @@ export default async function NewBillPage() {
         action={createBill}
         submitLabel="Add bill"
         defaultCurrency={profile?.default_currency ?? "AED"}
+        defaultReminderOffsetDays={profile?.default_reminder_offset_days ?? 3}
       />
     </div>
   );

@@ -90,7 +90,12 @@ export async function updateBill(
   if (parsed.error) return { error: parsed.error };
 
   const supabase = await createClient();
-  const { error } = await supabase.from("bills").update(parsed.values).eq("id", id);
+  const { error } = await supabase
+    .from("bills")
+    // Any edit resets reminder eligibility, so a rescheduled due date or
+    // offset still gets a fresh reminder instead of being skipped as "sent".
+    .update({ ...parsed.values, reminder_sent_at: null })
+    .eq("id", id);
 
   if (error) return { error: error.message };
 

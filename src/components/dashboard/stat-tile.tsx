@@ -4,11 +4,13 @@ export function StatTile({
   label,
   value,
   hint,
+  icon,
   className,
 }: {
   label: string;
   value: string;
   hint?: string;
+  icon?: React.ReactNode;
   className?: string;
 }) {
   return (
@@ -17,7 +19,12 @@ export function StatTile({
       <p className="mt-1.5 font-heading text-2xl font-semibold tabular-nums tracking-tight">
         {value}
       </p>
-      {hint && <p className="mt-0.5 text-xs text-muted-foreground">{hint}</p>}
+      {hint && (
+        <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
+          {icon}
+          {hint}
+        </p>
+      )}
     </div>
   );
 }

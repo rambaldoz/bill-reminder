@@ -4,6 +4,7 @@ export type Profile = {
   id: string;
   display_name: string | null;
   default_currency: string;
+  default_reminder_offset_days: number;
   created_at: string;
 };
 

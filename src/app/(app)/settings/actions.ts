@@ -34,3 +34,30 @@ export async function updateDefaultCurrency(
   revalidatePath("/", "layout");
   return { error: null, success: true };
 }
+
+export async function updateDefaultReminderOffset(
+  _prevState: SettingsActionState,
+  formData: FormData,
+): Promise<SettingsActionState> {
+  const days = Number(formData.get("defaultReminderOffsetDays"));
+
+  if (!Number.isInteger(days) || days < 0 || days > 30) {
+    return { error: "Enter a whole number of days, 0-30." };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ default_reminder_offset_days: days })
+    .eq("id", user.id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/", "layout");
+  return { error: null, success: true };
+}
