@@ -21,7 +21,7 @@ export function NotificationBell({ bills }: { bills: BillWithCategory[] }) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="relative flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+      <DropdownMenuTrigger className="relative flex size-9 items-center justify-center rounded-full bg-card text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
         <Bell className="size-5" />
         {count > 0 && (
           <span className="absolute top-1 right-1 flex size-4 items-center justify-center rounded-full bg-status-overdue text-[0.6rem] font-semibold text-white">

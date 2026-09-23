@@ -147,3 +147,20 @@ export const CURRENCIES: Array<{ code: string; name: string }> = [
   { code: "ZAR", name: "South African Rand" },
   { code: "ZMW", name: "Zambian Kwacha" },
 ];
+
+/** Currency codes with no single representative country (e.g. shared regional francs). */
+const NO_FLAG = new Set(["XAF", "XOF", "XPF", "XCD", "XDR"]);
+
+/**
+ * Most ISO 4217 currency codes are the issuing country's ISO 3166-1 alpha-2
+ * code plus a letter (e.g. "PH" + "P" for PHP), so the flag's country can be
+ * derived from the code's first two letters rather than hand-maintaining a
+ * country map. Returned code is fed into `country-flag-icons` (see
+ * `CurrencyFlag`), not rendered as a Unicode emoji flag.
+ */
+export function currencyRegion(code: string): string | null {
+  if (NO_FLAG.has(code)) return null;
+  const region = code.slice(0, 2).toUpperCase();
+  if (!/^[A-Z]{2}$/.test(region)) return null;
+  return region;
+}

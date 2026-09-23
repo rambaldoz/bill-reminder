@@ -7,7 +7,7 @@ export function StatTile({
   icon,
   className,
 }: {
-  label: string;
+  label: React.ReactNode;
   value: string;
   hint?: string;
   icon?: React.ReactNode;

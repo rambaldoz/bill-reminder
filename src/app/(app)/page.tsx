@@ -5,6 +5,7 @@ import { getBills } from "@/lib/bills/queries";
 import { addDaysIso, todayIso } from "@/lib/bills/status";
 import { formatMonthLabel, formatMoney } from "@/lib/format";
 import { StatTile } from "@/components/dashboard/stat-tile";
+import { CurrencyFlag } from "@/components/ui/currency-flag";
 import { BillCard } from "@/components/bills/bill-card";
 import { Button } from "@/components/ui/button";
 import type { BillWithCategory } from "@/lib/bills/types";
@@ -52,7 +53,8 @@ export default async function DashboardPage() {
                   key={currency}
                   className="flex h-[124px] w-[68%] shrink-0 snap-start flex-col justify-center rounded-2xl bg-card p-4 "
                 >
-                  <span className="w-fit rounded-full bg-secondary px-2 py-0.5 text-[11px] font-semibold text-secondary-foreground">
+                  <span className="inline-flex w-fit items-center gap-1 rounded-full bg-secondary px-2 py-1.5 text-[11px] font-semibold text-secondary-foreground">
+                    <CurrencyFlag currency={currency} />
                     {currency}
                   </span>
                   <p className="mt-1.5 font-heading text-2xl font-semibold tabular-nums tracking-tight">
@@ -67,7 +69,12 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <StatTile
-            label={sortedTotals[0]?.[0] ?? "AED"}
+            label={
+              <span className="inline-flex items-center gap-1">
+                <CurrencyFlag currency={sortedTotals[0]?.[0] ?? "AED"} />
+                {sortedTotals[0]?.[0] ?? "AED"}
+              </span>
+            }
             value={formatMoney(sortedTotals[0]?.[1] ?? 0, sortedTotals[0]?.[0] ?? "AED")}
             hint={`${paidThisMonth.length} bill${paidThisMonth.length === 1 ? "" : "s"} paid`}
           />
