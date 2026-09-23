@@ -33,7 +33,7 @@ export default async function CategoriesPage() {
           <Link
             key={category.id}
             href={`/settings/categories/${category.id}`}
-            className="flex items-center gap-3 rounded-2xl bg-card px-4 py-3.5 ring-1 ring-border/70 transition-colors hover:bg-muted/40"
+            className="flex items-center gap-3 rounded-2xl bg-card px-4 py-3.5  transition-colors hover:bg-muted/40"
           >
             <span
               className="flex size-10 shrink-0 items-center justify-center rounded-full"

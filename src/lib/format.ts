@@ -19,6 +19,13 @@ export function formatDate(dateIso: string) {
   }).format(new Date(Date.UTC(y, m - 1, d)));
 }
 
+export function formatMonthLabel(monthKey: string) {
+  const [y, m] = monthKey.split("-").map(Number);
+  return new Intl.DateTimeFormat(undefined, { month: "long" }).format(
+    new Date(Date.UTC(y, m - 1, 1)),
+  );
+}
+
 export function formatDateShort(dateIso: string) {
   const [y, m, d] = dateIso.split("-").map(Number);
   return new Intl.DateTimeFormat(undefined, {

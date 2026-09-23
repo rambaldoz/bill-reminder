@@ -88,7 +88,7 @@ export function StatsView({
       </div>
 
       {currencies.length > 1 && (
-        <div className="inline-flex w-fit gap-1 rounded-full bg-secondary/60 p-1.5 ring-1 ring-border/70">
+        <div className="inline-flex w-fit gap-1 rounded-full bg-secondary/60 p-1.5 ">
           {currencies.map((code) => (
             <button
               key={code}
@@ -154,7 +154,7 @@ export function StatsView({
             No bills paid in {monthLabel(periodMonth)}.
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-6 rounded-2xl bg-card p-5 ring-1 ring-border/70">
+          <div className="flex flex-col items-center gap-6 rounded-2xl bg-card p-5 ">
             <DonutChart
               segments={slices.map((slice) => ({
                 key: slice.categoryId ?? "none",
@@ -199,7 +199,7 @@ export function StatsView({
         <h2 className="mb-4 font-heading text-sm font-semibold text-foreground">
           Last 6 months
         </h2>
-        <div className="rounded-2xl bg-card p-5 ring-1 ring-border/70">
+        <div className="rounded-2xl bg-card p-5 ">
           <SpendBarChart points={monthPoints} currency={currency} />
         </div>
       </div>

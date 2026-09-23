@@ -3,7 +3,6 @@ import { createClient } from "@/lib/supabase/server";
 import { getBills } from "@/lib/bills/queries";
 import { billStatus } from "@/lib/bills/status";
 import { BottomNav } from "@/components/nav/bottom-nav";
-import { UserMenu } from "@/components/nav/user-menu";
 import { NotificationBell } from "@/components/nav/notification-bell";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
@@ -16,7 +15,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     redirect("/login");
   }
 
-  const displayName = (user.user_metadata?.display_name as string | undefined) ?? "";
+  const displayName = (user.user_metadata?.display_name as string | undefined) || "there";
 
   const bills = await getBills(supabase);
   const reminders = bills.filter((bill) => {
@@ -27,20 +26,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <header className="sticky top-0 z-10 border-b border-border/70 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
+      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
         <div className="mx-auto flex max-w-md items-center justify-between px-5 py-4">
-          <div className="flex items-center gap-2">
-            <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-heading text-sm font-semibold">
-              B
-            </span>
-            <span className="font-heading text-base font-semibold tracking-tight">
-              Bill Tracker
-            </span>
+          <div>
+            <p className="text-sm text-muted-foreground">Welcome back,</p>
+            <p className="font-heading text-lg font-semibold tracking-tight">{displayName}</p>
           </div>
-          <div className="flex items-center gap-1">
-            <NotificationBell bills={reminders} />
-            <UserMenu displayName={displayName} email={user.email ?? ""} />
-          </div>
+          <NotificationBell bills={reminders} />
         </div>
       </header>
 

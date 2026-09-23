@@ -59,7 +59,7 @@ export function MonthCalendar({ bills }: { bills: BillWithCategory[] }) {
     <div className="flex flex-col gap-6">
       <h1 className="font-heading text-2xl font-semibold tracking-tight">Calendar</h1>
 
-      <div className="rounded-2xl bg-card p-4 ring-1 ring-border/70">
+      <div className="rounded-2xl bg-card p-4 ">
         <div className="mb-4 flex items-center justify-between">
           <p className="font-heading text-base font-semibold">
             {monthLabel(cursor.year, cursor.month)}

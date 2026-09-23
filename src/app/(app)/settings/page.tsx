@@ -35,7 +35,7 @@ export default async function SettingsPage() {
 
       <Link
         href="/settings/categories"
-        className="flex items-center gap-3 rounded-2xl bg-card px-4 py-3.5 ring-1 ring-border/70 transition-colors hover:bg-muted/40"
+        className="flex items-center gap-3 rounded-2xl bg-card px-4 py-3.5  transition-colors hover:bg-muted/40"
       >
         <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
           <Tags className="size-4.5" />

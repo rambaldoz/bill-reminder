@@ -15,7 +15,7 @@ export default function Loading() {
         {Array.from({ length: 7 }).map((_, i) => (
           <div
             key={i}
-            className="flex items-center gap-3 rounded-2xl bg-card px-4 py-3.5 ring-1 ring-border/70"
+            className="flex items-center gap-3 rounded-2xl bg-card px-4 py-3.5 "
           >
             <Skeleton className="size-10 shrink-0 rounded-full" />
             <Skeleton className="h-4 w-28" />
