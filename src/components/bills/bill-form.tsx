@@ -28,6 +28,7 @@ export function BillForm({
   submitLabel,
   defaultCurrency = "AED",
   defaultReminderOffsetDays = 3,
+  defaultReminderTime = "09:00",
 }: {
   categories: Category[];
   bill?: BillWithCategory;
@@ -35,6 +36,7 @@ export function BillForm({
   submitLabel: string;
   defaultCurrency?: string;
   defaultReminderOffsetDays?: number;
+  defaultReminderTime?: string;
 }) {
   const [state, formAction, pending] = useActionState(action, initialState);
 
@@ -152,19 +154,34 @@ export function BillForm({
         </Select>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="reminderOffsetDays">Remind me (days before due)</Label>
-        <Input
-          id="reminderOffsetDays"
-          name="reminderOffsetDays"
-          type="number"
-          min="0"
-          step="1"
-          inputMode="numeric"
-          defaultValue={bill?.reminder_offset_days ?? defaultReminderOffsetDays}
-          required
-        />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="reminderOffsetDays">Remind me (days before)</Label>
+          <Input
+            id="reminderOffsetDays"
+            name="reminderOffsetDays"
+            type="number"
+            min="0"
+            step="1"
+            inputMode="numeric"
+            defaultValue={bill?.reminder_offset_days ?? defaultReminderOffsetDays}
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="reminderTime">At</Label>
+          <Input
+            id="reminderTime"
+            name="reminderTime"
+            type="time"
+            defaultValue={bill?.reminder_time?.slice(0, 5) ?? defaultReminderTime}
+            required
+          />
+        </div>
       </div>
+      <p className="-mt-4 text-xs text-muted-foreground">
+        Notifications may arrive up to 15 minutes after the chosen time.
+      </p>
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="notes">Notes</Label>

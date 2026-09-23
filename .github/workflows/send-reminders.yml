@@ -1,0 +1,20 @@
+name: Send bill reminders
+
+# Triggers the reminders route every 15 minutes. This exists because
+# Vercel's free Hobby plan only allows cron jobs to run once a day, which
+# isn't enough to honor a user-chosen reminder time. The route itself
+# still only sends once per bill (gated by reminder_sent_at in the DB),
+# so more-frequent calls here are safe.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call /api/cron/send-reminders
+        run: |
+          curl -sS -f -X GET "${{ vars.APP_URL }}/api/cron/send-reminders" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"

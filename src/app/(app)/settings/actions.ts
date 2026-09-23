@@ -35,14 +35,18 @@ export async function updateDefaultCurrency(
   return { error: null, success: true };
 }
 
-export async function updateDefaultReminderOffset(
+export async function updateReminderDefaults(
   _prevState: SettingsActionState,
   formData: FormData,
 ): Promise<SettingsActionState> {
   const days = Number(formData.get("defaultReminderOffsetDays"));
+  const time = String(formData.get("defaultReminderTime") ?? "");
 
   if (!Number.isInteger(days) || days < 0 || days > 30) {
     return { error: "Enter a whole number of days, 0-30." };
+  }
+  if (!/^\d{2}:\d{2}$/.test(time)) {
+    return { error: "Enter a valid time." };
   }
 
   const supabase = await createClient();
@@ -53,7 +57,34 @@ export async function updateDefaultReminderOffset(
 
   const { error } = await supabase
     .from("profiles")
-    .update({ default_reminder_offset_days: days })
+    .update({ default_reminder_offset_days: days, default_reminder_time: time })
+    .eq("id", user.id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/", "layout");
+  return { error: null, success: true };
+}
+
+export async function updateTimezone(
+  _prevState: SettingsActionState,
+  formData: FormData,
+): Promise<SettingsActionState> {
+  const timezone = String(formData.get("timezone") ?? "");
+
+  if (!timezone) {
+    return { error: "Choose a timezone." };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ timezone })
     .eq("id", user.id);
 
   if (error) return { error: error.message };

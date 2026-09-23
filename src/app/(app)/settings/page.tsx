@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/profile";
 import { CurrencyForm } from "@/components/settings/currency-form";
 import { ReminderOffsetForm } from "@/components/settings/reminder-offset-form";
+import { TimezoneForm } from "@/components/settings/timezone-form";
 import { PushToggle } from "@/components/settings/push-toggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -60,12 +61,25 @@ export default async function SettingsPage() {
 
       <Card className="shadow-none">
         <CardHeader>
+          <CardTitle className="text-sm font-semibold">Timezone</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <TimezoneForm
+            key={profile?.timezone ?? "Asia/Dubai"}
+            defaultTimezone={profile?.timezone ?? "Asia/Dubai"}
+          />
+        </CardContent>
+      </Card>
+
+      <Card className="shadow-none">
+        <CardHeader>
           <CardTitle className="text-sm font-semibold">Reminders</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-5">
           <ReminderOffsetForm
-            key={profile?.default_reminder_offset_days ?? 3}
+            key={`${profile?.default_reminder_offset_days ?? 3}-${profile?.default_reminder_time ?? "09:00"}`}
             defaultDays={profile?.default_reminder_offset_days ?? 3}
+            defaultTime={profile?.default_reminder_time?.slice(0, 5) ?? "09:00"}
           />
           <div className="border-t border-border pt-5">
             <PushToggle />

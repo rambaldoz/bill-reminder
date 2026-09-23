@@ -3,13 +3,18 @@ import webpush, { WebPushError } from "web-push";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { addDaysIso, todayIso } from "@/lib/bills/status";
 import { formatDateShort, formatMoney } from "@/lib/format";
+import { nowInTimezone } from "@/lib/timezone";
 
 export const dynamic = "force-dynamic";
 
 // Bills due for a reminder: unpaid, never reminded, and due_date - offset
-// has arrived (this also naturally catches bills the cron missed on the
-// exact trigger day — it'll just send a slightly-late reminder once).
-const LOOKAHEAD_DAYS = 60;
+// has arrived in the bill owner's own timezone, at or after their chosen
+// reminder time. This route is meant to be called every ~15 minutes (see
+// .github/workflows/send-reminders.yml) rather than relying on Vercel's
+// once-a-day Hobby-plan cron, so a chosen time is actually honored instead
+// of only ever firing whenever the one daily cron happens to run.
+const LOOKAHEAD_DAYS = 61;
+const DEFAULT_TIMEZONE = "Asia/Dubai";
 
 export async function GET(request: NextRequest) {
   const auth = request.headers.get("authorization");
@@ -26,12 +31,15 @@ export async function GET(request: NextRequest) {
   webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
 
   const supabase = createAdminClient();
-  const today = todayIso();
-  const horizon = addDaysIso(today, LOOKAHEAD_DAYS);
+  // Broad, server-time-based pre-filter; precise eligibility is computed
+  // per-bill below using the owner's own timezone.
+  const horizon = addDaysIso(todayIso(), LOOKAHEAD_DAYS);
 
   const { data: candidates, error: fetchError } = await supabase
     .from("bills")
-    .select("id, user_id, title, amount, currency, due_date, reminder_offset_days, category:categories(name)")
+    .select(
+      "id, user_id, title, amount, currency, due_date, reminder_offset_days, reminder_time, category:categories(name), profile:profiles(timezone)",
+    )
     .is("paid_at", null)
     .is("reminder_sent_at", null)
     .lte("due_date", horizon);
@@ -40,9 +48,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: fetchError.message }, { status: 500 });
   }
 
-  const due = (candidates ?? []).filter(
-    (bill) => addDaysIso(bill.due_date, -bill.reminder_offset_days) <= today,
-  );
+  const due = (candidates ?? []).filter((bill) => {
+    const profile = Array.isArray(bill.profile) ? bill.profile[0] : bill.profile;
+    const timezone = profile?.timezone || DEFAULT_TIMEZONE;
+    const { date: userToday, time: userNow } = nowInTimezone(timezone);
+
+    const triggerDate = addDaysIso(bill.due_date, -bill.reminder_offset_days);
+    const dateEligible = triggerDate <= userToday;
+    const timeEligible = userNow >= bill.reminder_time.slice(0, 5);
+    return dateEligible && timeEligible;
+  });
 
   let sent = 0;
   let skippedNoSubscription = 0;

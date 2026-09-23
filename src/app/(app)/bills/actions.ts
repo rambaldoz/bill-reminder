@@ -18,6 +18,7 @@ function parseBillForm(formData: FormData) {
   const recurrence = String(formData.get("recurrence") ?? "none") as Recurrence;
   const categoryId = String(formData.get("categoryId") ?? "") || null;
   const reminderOffsetRaw = String(formData.get("reminderOffsetDays") ?? "3");
+  const reminderTime = String(formData.get("reminderTime") ?? "09:00");
   const notes = String(formData.get("notes") ?? "").trim() || null;
 
   if (!title) return { error: "Title is required." } as const;
@@ -42,6 +43,10 @@ function parseBillForm(formData: FormData) {
     return { error: "Reminder offset must be a whole number of days." } as const;
   }
 
+  if (!/^\d{2}:\d{2}$/.test(reminderTime)) {
+    return { error: "Enter a valid reminder time." } as const;
+  }
+
   return {
     error: null,
     values: {
@@ -52,6 +57,7 @@ function parseBillForm(formData: FormData) {
       recurrence,
       category_id: categoryId,
       reminder_offset_days: reminderOffsetDays,
+      reminder_time: reminderTime,
       notes,
     },
   } as const;
@@ -160,6 +166,7 @@ export async function markBillPaid(id: string) {
       recurrence: bill.recurrence,
       status: "upcoming",
       reminder_offset_days: bill.reminder_offset_days,
+      reminder_time: bill.reminder_time,
       notes: bill.notes,
       parent_bill_id: bill.parent_bill_id ?? bill.id,
     });

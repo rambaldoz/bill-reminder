@@ -23,6 +23,7 @@ export type Bill = {
   recurrence: Recurrence;
   status: BillStatus;
   reminder_offset_days: number;
+  reminder_time: string;
   notes: string | null;
   paid_at: string | null;
   reminder_sent_at: string | null;

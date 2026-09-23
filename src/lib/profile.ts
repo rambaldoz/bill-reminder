@@ -5,6 +5,8 @@ export type Profile = {
   display_name: string | null;
   default_currency: string;
   default_reminder_offset_days: number;
+  default_reminder_time: string;
+  timezone: string;
   created_at: string;
 };
 
