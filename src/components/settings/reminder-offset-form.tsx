@@ -29,7 +29,7 @@ export function ReminderOffsetForm({
 
   return (
     <form action={formAction} className="flex flex-col gap-3">
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-[2fr_3fr] gap-2">
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="defaultReminderOffsetDays" className="text-xs text-muted-foreground">
             Days before due
