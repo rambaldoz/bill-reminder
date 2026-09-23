@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { IconInput } from "@/components/ui/icon-input";
+import { AdornedInput } from "@/components/ui/adorned-input";
 import { Label } from "@/components/ui/label";
 import type { Category } from "@/lib/bills/types";
 
@@ -96,7 +96,7 @@ export function HistoryFilters({
           <Label htmlFor="from" className="text-xs text-muted-foreground">
             From
           </Label>
-          <IconInput
+          <AdornedInput
             icon={CalendarDays}
             id="from"
             type="date"
@@ -108,7 +108,7 @@ export function HistoryFilters({
           <Label htmlFor="to" className="text-xs text-muted-foreground">
             To
           </Label>
-          <IconInput
+          <AdornedInput
             icon={CalendarDays}
             id="to"
             type="date"

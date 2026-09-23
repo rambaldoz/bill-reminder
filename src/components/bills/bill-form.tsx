@@ -9,7 +9,7 @@ import { RECURRENCE_LABEL } from "@/lib/bills/recurrence";
 import type { BillWithCategory, Category, Recurrence } from "@/lib/bills/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { IconInput } from "@/components/ui/icon-input";
+import { AdornedInput } from "@/components/ui/adorned-input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -127,7 +127,7 @@ export function BillForm({
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="dueDate">Due date</Label>
-        <IconInput
+        <AdornedInput
           icon={CalendarDays}
           id="dueDate"
           name="dueDate"
@@ -157,10 +157,11 @@ export function BillForm({
         </Select>
       </div>
 
-      <div className="grid grid-cols-[2fr_3fr] gap-3">
+      <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <Label htmlFor="reminderOffsetDays">Remind me (days before)</Label>
-          <Input
+          <Label htmlFor="reminderOffsetDays">Remind me</Label>
+          <AdornedInput
+            suffix="days"
             id="reminderOffsetDays"
             name="reminderOffsetDays"
             type="number"
@@ -173,7 +174,7 @@ export function BillForm({
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="reminderTime">At</Label>
-          <IconInput
+          <AdornedInput
             icon={Clock}
             id="reminderTime"
             name="reminderTime"

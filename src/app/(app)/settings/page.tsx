@@ -71,7 +71,7 @@ export default async function SettingsPage() {
         </CardContent>
       </Card>
 
-      <Card className="shadow-none">
+      <Card size="sm" className="shadow-none">
         <CardHeader>
           <CardTitle className="text-sm font-semibold">Reminders</CardTitle>
         </CardHeader>

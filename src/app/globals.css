@@ -167,7 +167,7 @@
 
   /* Native date/time pickers render their own icon inconsistently across
      platforms (a small icon on desktop Chrome, none at all on iOS Safari).
-     We render our own icon instead (see IconInput) and just hide the native
+     We render our own icon instead (see AdornedInput) and just hide the native
      one in place. Deliberately NOT resizing/repositioning this pseudo-element
      (no position/inset/width/height) — WebKit on iOS resolves that
      differently than desktop Chrome and it can inflate the page's layout
