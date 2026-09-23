@@ -167,16 +167,13 @@
 
   /* Native date/time pickers render their own icon inconsistently across
      platforms (a small icon on desktop Chrome, none at all on iOS Safari).
-     We render our own icon instead (see IconInput) and make the whole
-     Chromium indicator invisible-but-clickable across the full field, so
-     the affordance is the same everywhere. */
+     We render our own icon instead (see IconInput) and just hide the native
+     one in place. Deliberately NOT resizing/repositioning this pseudo-element
+     (no position/inset/width/height) — WebKit on iOS resolves that
+     differently than desktop Chrome and it can inflate the page's layout
+     width, causing a horizontal-scroll gap. Opacity alone is layout-safe. */
   input[type="date"]::-webkit-calendar-picker-indicator,
   input[type="time"]::-webkit-calendar-picker-indicator {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
     opacity: 0;
     cursor: pointer;
   }

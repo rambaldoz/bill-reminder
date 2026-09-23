@@ -15,8 +15,8 @@ export function IconInput({
   ...props
 }: ComponentProps<typeof Input> & { icon: LucideIcon }) {
   return (
-    <div className="relative">
-      <Input className={cn("pr-11", className)} {...props} />
+    <div className="relative min-w-0">
+      <Input className={cn("min-w-0 pr-11", className)} {...props} />
       <Icon
         className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-muted-foreground"
         aria-hidden
