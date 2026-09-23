@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { CalendarDays } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CategoryIcon } from "@/lib/bills/category-icons";
 import {
@@ -10,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+import { IconInput } from "@/components/ui/icon-input";
 import { Label } from "@/components/ui/label";
 import type { Category } from "@/lib/bills/types";
 
@@ -95,7 +96,8 @@ export function HistoryFilters({
           <Label htmlFor="from" className="text-xs text-muted-foreground">
             From
           </Label>
-          <Input
+          <IconInput
+            icon={CalendarDays}
             id="from"
             type="date"
             value={from}
@@ -106,7 +108,8 @@ export function HistoryFilters({
           <Label htmlFor="to" className="text-xs text-muted-foreground">
             To
           </Label>
-          <Input
+          <IconInput
+            icon={CalendarDays}
             id="to"
             type="date"
             value={to}

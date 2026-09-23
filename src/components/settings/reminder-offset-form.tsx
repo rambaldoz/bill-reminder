@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
+import { Clock } from "lucide-react";
 import { toast } from "sonner";
 import {
   updateReminderDefaults,
@@ -8,6 +9,7 @@ import {
 } from "@/app/(app)/settings/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { IconInput } from "@/components/ui/icon-input";
 import { Label } from "@/components/ui/label";
 
 const initialState: SettingsActionState = { error: null };
@@ -48,7 +50,8 @@ export function ReminderOffsetForm({
           <Label htmlFor="defaultReminderTime" className="text-xs text-muted-foreground">
             At
           </Label>
-          <Input
+          <IconInput
+            icon={Clock}
             id="defaultReminderTime"
             name="defaultReminderTime"
             type="time"

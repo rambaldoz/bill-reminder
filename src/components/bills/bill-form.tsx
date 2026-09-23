@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { CalendarDays, Clock } from "lucide-react";
 import type { BillActionState } from "@/app/(app)/bills/actions";
 import { CategoryIcon } from "@/lib/bills/category-icons";
 import { CURRENCIES } from "@/lib/currencies";
@@ -8,6 +9,7 @@ import { RECURRENCE_LABEL } from "@/lib/bills/recurrence";
 import type { BillWithCategory, Category, Recurrence } from "@/lib/bills/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { IconInput } from "@/components/ui/icon-input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -125,7 +127,8 @@ export function BillForm({
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="dueDate">Due date</Label>
-        <Input
+        <IconInput
+          icon={CalendarDays}
           id="dueDate"
           name="dueDate"
           type="date"
@@ -170,7 +173,8 @@ export function BillForm({
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="reminderTime">At</Label>
-          <Input
+          <IconInput
+            icon={Clock}
             id="reminderTime"
             name="reminderTime"
             type="time"
